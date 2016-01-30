@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="js/jQuery.js"></script>
+    <style>
+        canvas{
+            background: #aaa;
+        }
+    </style>
+    <script>
+        window.onload=function(){
+            var canvas=document.getElementsByTagName('canvas')[0];
+            var cobj=canvas.getContext('2d');
+
+            //////////////////
+//            canvas.onmousedown=function(e){
+//                var startx= e.offsetX;
+//                var starty= e.offsetY;
+//                cobj.beginPath();
+//                cobj.moveTo(startx,starty);
+//                canvas.onmousemove=function(e){
+//                    var endx= e.offsetX;
+//                    var endy= e.offsetY;
+//                    cobj.lineTo(endx,endy);
+//                    cobj.stroke();
+//                }
+//                canvas.onmouseup=function(){
+//                    canvas.onmousemove=null;
+//                    canvas.onmouseup=null;
+//                    cobj.closePath();
+//                }
+//            }
+            ////////////////////////
+            var arr=[];
+            arr.push(cobj.getImageData(0,0,canvas.width,canvas.height));
+            canvas.onmousedown=function(e){
+                var startx= e.offsetX;
+                var starty= e.offsetY;
+
+                canvas.onmousemove=function(e){
+                    cobj.clearRect(0,0,canvas.width,canvas.height);
+                    if(arr.length!=0){
+                        cobj.putImageData(arr[arr.length-1],0,0);
+                    }
+                    var endx= e.offsetX;
+                    var endy= e.offsetY;
+                    cobj.beginPath();
+                    cobj.moveTo(startx,starty);
+                    cobj.lineTo(endx,endy);
+                    cobj.stroke();
+                    cobj.closePath();
+                }
+                canvas.onmouseup=function(){
+                    arr.push(cobj.getImageData(0,0,canvas.width,canvas.height));
+                    canvas.onmousemove=null;
+                    canvas.onmouseup=null;
+                }
+            }
+            var btn=document.getElementsByTagName('button')[0];
+            btn.onclick=function(){
+                if(arr.length>1){
+                    arr.pop();
+                    cobj.putImageData(arr[arr.length-1],0,0);
+                }else{
+                    return;
+                }
+            }
+            ////////////////////////
+//            cobj.strokeRect(0.5,0.5,100,100);
+//            cobj.clearRect(0,0,400,400);//清空画布
+//
+//            cobj.moveTo(0,0)
+//            cobj.beginPath();
+//            cobj.rect(0,0,100,100);
+////            cobj.fill();
+//            cobj.stroke();
+//            cobj.closePath();
+
+//            cobj.beginPath();
+//            cobj.moveTo(0,0);
+//            cobj.lineTo(100,100);
+//            cobj.stroke();
+//            cobj.closePath();
+//
+//            cobj.beginPath();
+//            cobj.moveTo(200,0);
+//            cobj.lineTo(300,100);
+//            cobj.stroke();
+//            cobj.closePath();
+
+//            var colorobj=cobj.createLinearGradient(0,0,100,0);
+//            colorobj.addColorStop(0,'#000');
+//            colorobj.addColorStop(1,'red');
+
+//            var colorobj1=cobj.createRadialGradient(50,50,0,50,50,100);
+//            colorobj1.addColorStop(0,'#000');
+//            colorobj1.addColorStop(0.5,'pink');
+//            colorobj1.addColorStop(1,'red');
+
+//            var img=document.getElementsByTagName('img')[0];
+//            var imgobj=cobj.createPattern(img,'repeat');
+
+//            cobj.fillStyle=colorobj1;
+//            cobj.strokeStyle='blue';
+//            cobj.lineWidth=2;
+//            cobj.shadowColor='#000';
+//            cobj.shadowBlur=3;
+//            cobj.shadowOffsetX=10;
+//            cobj.shadowOffsetY=10;
+
+//            cobj.fillRect(0,0,200,200);
+//            cobj.strokeRect(200,200,200,200);
+
+        }
+
+    </script>
+</head>
+<body>
+<canvas width="800" height="800"></canvas>
+<button type="button">后退</button>
+<img src="images/1.jpg" alt="" hidden>
+</body>
+</html>
